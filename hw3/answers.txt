@@ -1,0 +1,77 @@
+================================================================================
+Problem 1
+
+(a)
+  Each thread will receive half of the iterations. Because f(i) requires i
+  milliseconds to run, the slow thread will require ~3x as long as the fast
+  thread to run. If the whole program takes 30 seconds, then one of the two
+  threads is waiting for 20 seconds.
+(b)
+  Using schedule(static,1) changes the chunk size to 1, which will alternate
+  the assignment of iteration numbers. i.e. One thread will have the even
+  iterations and the other thread will have the odd iterations. For an even
+  number of iterations, the second thread will do n/2 more milliseconds of
+  work. For an odd number of iterations, the first thread will do n/2 more
+  milliseconds of work. Thus, there will be speed improvement, but there will
+  still be a waiting thread at some point.
+(c)
+  In this case, schedule(dynamic,1) will be worse than schedule(static,1).
+  Each thread with schedule(dynamic,1) will receive the same iteration number
+  as with static scheduling, but the extra overhead from dynamic scheduling
+  will slow the entire program down.
+(d)
+  With #pragma omp for schedule(static) nowait, the thread that's finished will
+  be able to jump ahead to the second loop instead of waiting for the slow
+  thread. In this instance the two threads would finish both loops at the same
+  time and do the same amount of work. The total runtime for the two loops
+  is half of the runtime with a single thread.
+  
+================================================================================
+Problem 2
+
+My parallelized version successfully provides some speed improvements. For my
+code, it's important to keep the number of chunks below the number of
+processors the script has access to. These results are obtained on a Macbook
+pro with the apple m1 chip.
+
+  # of threads  | # of chunks | time improvement (positive is good)
+-------------------------------------------------------------------
+        8              8                    0.071 seconds
+        8              5                    0.089 seconds
+        8              15                  -0.029 seconds
+        
+================================================================================
+Problem 3
+
+(Jacobi)
+My parallelized version again provides some speed improvements, but not much.
+Again, these results are obtained on a Macbook pro with the apple m1 chip.
+Although not shown here, the parallel version for small values of N is much
+slower than the original version. Large(ish) domains are necessary for
+improvement. These data use a fixed number of iterations.
+
+  # of threads  |     size N     | time improvement (positive is good)
+-------------------------------------------------------------------
+        8               70                    0.204 seconds
+        4               70                    0.133 seconds
+        12              70                    0.207 seconds
+        16              70                    0.057 seconds
+        24              70                   -0.223 seconds
+        24              100                   0.954 seconds
+        8               100                   1.424 seconds
+
+(Gauss Siedel)
+My parallelized version provides a small improvement to performance. The best
+improvement is using 8 threads and gives ~%10 speed boost. On the macbook pro
+with apple m1 chip. These data are using a fixed iteration number, instead of
+a target residual. The residual is still calculated as normal.
+
+  # of threads  |     size N     | time improvement (positive is good)
+-------------------------------------------------------------------
+        8               90                    0.078 seconds
+        4               90                    0.072 seconds
+        12              90                    0.077 seconds
+        16              90                    0.075 seconds
+        2               90                    0.062 seconds
+        8               120                   0.248 seconds
+        16              120                   0.266 seconds
