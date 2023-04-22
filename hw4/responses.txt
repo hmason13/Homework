@@ -1,0 +1,42 @@
+Responses for Homework 4
+
+================================================================================
+1. I run pingpong.cpp on Greene and obtain the following values for
+    latency and bandwidth:
+    pingpong latency: 3.19754 e-4 ms
+    pingpong bandwidth: 9.408436 GB/s
+================================================================================
+2. For int_ring.cpp, I am using different nodes on the Greene cluster. Timings
+    for different numbers of nodes and loops are below. The version I've added
+    to my github submission is the version that sends an integer, not a 2MB
+    array.
+    
+    Number of nodes         Number of Loops           Time required
+--------------------------------------------------------------------------
+        4                         10                    0.063087 s
+        8                         10                    0.128944 s            
+        12                        10                    0.182169 s                 
+        4                        1000                   0.071864 s 
+        8                        1000                   0.133817 s
+        12                       1000                   0.203228 s
+        
+    The timings are pretty consistent with each other. For the 1000 loop runs,
+    the amount of communication is the number of nodes times 1000. Thus, I
+    find that 1 communication from node to nodes requires about 16 microseconds.
+    
+    The following table gives timings for a send of a 2MB array. This script
+    is called file_ring.cpp
+    
+    Number of nodes         Number of Loops           Time required
+--------------------------------------------------------------------------
+        4                         10                    0.044602 s
+        8                         10                    0.138340 s            
+        12                        10                    0.179313 s                 
+        4                        1000                   0.055207 s 
+        8                        1000                   0.127038 s
+        12                       1000                   0.216785 s
+
+    It seems that sending a 2MB array instead of a single number does not
+    significantly change the amount of time that a message pass requires.
+    Using these results the system has bandwidth 110 GB/s.
+    (2MB*12000/0.2167s)
