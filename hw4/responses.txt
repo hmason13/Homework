@@ -40,3 +40,18 @@ Responses for Homework 4
     significantly change the amount of time that a message pass requires.
     Using these results the system has bandwidth 110 GB/s.
     (2MB*12000/0.2167s)
+================================================================================
+3. I've chosen to implement an MPI version of the scan function. In order to
+    ensure that the script runs correctly, I've initialized the vector with
+    only ones.
+================================================================================
+4. I plan to work with Ryan and Nick.
+    We will build a finite volume solver for the
+    shallow water equations. It will of course be parallelized, and will
+    run on Greene. We also are going to use a c package that will allow us
+    to use an adaptive mesh. The adaptive mesh will allow for much smaller
+    viscosity term in the equations, which in turn implies sharper features and
+    a more accurate solution.
+    
+    
+    
